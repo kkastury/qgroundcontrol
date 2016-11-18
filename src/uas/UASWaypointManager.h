@@ -86,6 +86,8 @@ public:
 
     void readWaypoints(bool read_to_edit=false);    ///< Requests the MAV's current waypoint list.
     void writeWaypoints();                          ///< Sends the waypoint list to the MAV
+	void writeNewWaypoint(quint16 seq);             ///< Sends the new waypoint in the list to the MAV for chase mode
+	
     int setCurrentWaypoint(quint16 seq);            ///< Sends the sequence number of the waypoint that should get the new target waypoint to the UAS
     int setCurrentEditable(quint16 seq);          ///< Changes the current waypoint in edit tab
     /*@}*/
@@ -118,7 +120,8 @@ public:
     int getFrameRecommendation();
     float getAcceptanceRadiusRecommendation();
     float getHomeAltitudeOffsetDefault();
-
+	//sr
+	void sendWaypoint(quint16 seq);                 ///< Sends a waypoint with sequence number seq
 private:
     /** @name Message send functions */
     /*@{*/
@@ -127,7 +130,7 @@ private:
     void sendWaypointCount();
     void sendWaypointRequestList();
     void sendWaypointRequest(quint16 seq);          ///< Requests a waypoint with sequence number seq
-    void sendWaypoint(quint16 seq);                 ///< Sends a waypoint with sequence number seq
+    //void sendWaypoint(quint16 seq);                 ///< Sends a waypoint with sequence number seq
     void sendWaypointAck(quint8 type);              ///< Sends a waypoint ack
     /*@}*/
 

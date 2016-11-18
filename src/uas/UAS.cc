@@ -176,7 +176,8 @@ UAS::UAS(MAVLinkProtocol* protocol, int id, MAV_AUTOPILOT autopilotType) : UASIn
     sensorHil(false),
     lastSendTimeGPS(0),
     lastSendTimeSensors(0),
-    lastSendTimeOpticalFlow(0)
+    lastSendTimeOpticalFlow(0),
+	chase_mode(false)
 {
 
     for (unsigned int i = 0; i<255;++i)

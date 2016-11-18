@@ -35,9 +35,9 @@ This file is part of the QGROUNDCONTROL project
 #include "UASManager.h"
 #include "QGCMessageBox.h"
 
-#define PROTOCOL_TIMEOUT_MS 2000    ///< maximum time to wait for pending messages until timeout
-#define PROTOCOL_DELAY_MS 20        ///< minimum delay between sent messages
-#define PROTOCOL_MAX_RETRIES 5      ///< maximum number of send retries (after timeout)
+#define PROTOCOL_TIMEOUT_MS 800    ///< maximum time to wait for pending messages until timeout
+#define PROTOCOL_DELAY_MS 200        ///< minimum delay between sent messages
+#define PROTOCOL_MAX_RETRIES 7      ///< maximum number of send retries (after timeout)
 const float UASWaypointManager::defaultAltitudeHomeOffset   = 30.0f;
 UASWaypointManager::UASWaypointManager(UAS* _uas)
     : uas(_uas),
@@ -171,7 +171,7 @@ void UASWaypointManager::handleWaypointCount(quint8 systemId, quint8 compId, qui
 
 
     } else {
-		if (current_state != WP_GETLIST_GETWPS && systemId == current_partner_systemid)
+		/*if (current_state != WP_GETLIST_GETWPS && systemId == current_partner_systemid)
 		{
 			qDebug("Requesting new waypoints. Propably changed onboard.");
 			if (!_updateWPlist_timer.isActive())
@@ -183,7 +183,7 @@ void UASWaypointManager::handleWaypointCount(quint8 systemId, quint8 compId, qui
 		else
 		{
 			qDebug("Rejecting waypoint count message, check mismatch: current_state: %d == %d, system id %d == %d, comp id %d == %d", current_state, WP_GETLIST, current_partner_systemid, systemId, current_partner_compid, compId);
-		}
+		}*/
 	}
 }
 
@@ -1035,6 +1035,74 @@ void UASWaypointManager::writeWaypoints()
     }
 }
 
+void UASWaypointManager::writeNewWaypoint(quint16 seq)
+{
+	if (current_state == WP_IDLE) {
+		// Send clear all if count == 0
+		if (waypointsEditable.count() > 0) {
+			emit _startProtocolTimer();  // Start timer on our thread
+			current_retries = PROTOCOL_MAX_RETRIES;
+
+			current_count = 1;
+			current_state = WP_SENDLIST;
+			current_wp_id = seq;
+			current_partner_systemid = uasid;
+			current_partner_compid = MAV_COMP_ID_MISSIONPLANNER;
+
+			//clear local buffer
+			// Why not replace with waypoint_buffer.clear() ?
+			// because this will lead to memory leaks, the waypoint-structs
+			// have to be deleted, clear() would only delete the pointers.
+			while (!waypoint_buffer.empty()) {
+				delete waypoint_buffer.back();
+				waypoint_buffer.pop_back();
+			}
+
+			bool noCurrent = true;
+			int i = seq;
+			//copy waypoint data to local buffer
+			//for (int i = 0; i < current_count; i++) {
+				waypoint_buffer.push_back(new mavlink_mission_item_t);
+				mavlink_mission_item_t *cur_d = waypoint_buffer.back();
+				memset(cur_d, 0, sizeof(mavlink_mission_item_t));   //initialize with zeros
+				const Waypoint *cur_s = waypointsEditable.at(i);
+
+				cur_d->autocontinue = cur_s->getAutoContinue();
+				cur_d->current = cur_s->getCurrent() & noCurrent;   //make sure only one current waypoint is selected, the first selected will be chosen
+				cur_d->param1 = cur_s->getParam1();
+				cur_d->param2 = cur_s->getParam2();
+				cur_d->param3 = cur_s->getParam3();
+				cur_d->param4 = cur_s->getParam4();
+				cur_d->frame = cur_s->getFrame();
+				cur_d->command = cur_s->getAction();
+				cur_d->seq = 0;     // don't read out the sequence number of the waypoint class
+				cur_d->x = cur_s->getX();
+				cur_d->y = cur_s->getY();
+				cur_d->z = cur_s->getZ();
+
+				if (cur_s->getCurrent() && noCurrent)
+					noCurrent = false;
+				if (i == (current_count - 1) && noCurrent == true) //not a single waypoint was set as "current"
+					cur_d->current = true; // set the last waypoint as current. Or should it better be the first waypoint ?
+		//	}
+
+
+
+
+			//send the waypoint count to UAS (this starts the send transaction)
+			sendWaypointCount();
+		}
+		else if (waypointsEditable.count() == 0)
+		{
+			clearWaypointList();
+		}
+	}
+	else
+	{
+		// We're in another transaction, ignore command
+		qDebug() << tr("UASWaypointManager::sendWaypoints() doing something else. Ignoring command");
+	}
+}
 void UASWaypointManager::sendWaypointClearAll()
 {
     if (!uas) return;

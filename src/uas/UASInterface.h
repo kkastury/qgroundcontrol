@@ -228,7 +228,7 @@ public:
     {
         return color;
     }
-
+	virtual void set_chase_mode(bool chase_mode) = 0;
     /** @brief Returns a list of actions/commands that this vehicle can perform.
      * Used for creating UI elements for built-in functionality for this vehicle.
      * Actions should be mappings to `void f(void);` functions that simply issue

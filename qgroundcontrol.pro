@@ -21,7 +21,6 @@ TEMPLATE =  subdirs
 CONFIG  +=  ordered
 SUBDIRS  =  ./QGCLocationPlugin.pro
 SUBDIRS +=  ./QGCApplication.pro
-
 QGCApplication.depends = QGCLocationPlugin
 
 message(Qt version $$[QT_VERSION])

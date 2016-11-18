@@ -381,7 +381,9 @@ public:
     void setTemperatureVar(float var){
         temperature_var = var;
     }
-
+	void set_chase_mode(bool chase_mode) {
+		this->chase_mode = chase_mode;
+	};
     bool isRotaryWing();
     bool isFixedWing();
 
@@ -990,6 +992,7 @@ protected:
     quint64 lastSendTimeOpticalFlow; ///< Last HIL Optical Flow message sent
     QList<QAction*> actions; ///< A list of actions that this UAS can perform.
 
+	bool chase_mode;
 
 protected slots:
     /** @brief Write settings to disk */
