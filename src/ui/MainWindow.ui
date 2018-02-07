@@ -51,7 +51,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMGround">
@@ -80,6 +80,7 @@
     <addaction name="actionSetup"/>
     <addaction name="actionPlan"/>
     <addaction name="actionFlight"/>
+    <addaction name="actionPolygonPlan"/>
     <addaction name="actionAnalyze"/>
     <addaction name="separator"/>
     <addaction name="actionFullscreen"/>
@@ -197,6 +198,14 @@
    </property>
    <property name="text">
     <string>Analyze</string>
+   </property>
+  </action>
+  <action name="actionPolygonPlan">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>PolygonPlan</string>
    </property>
   </action>
   <action name="actionFlight">

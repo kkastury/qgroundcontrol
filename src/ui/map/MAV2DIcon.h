@@ -37,7 +37,9 @@ public:
      * @param alignment alignment (Middle or TopLeft)
      * @param pen QPen for drawing
      */
-    MAV2DIcon(mapcontrol::MapGraphicItem* map,mapcontrol::OPMapWidget* parent, qreal lat=0, qreal lon=0, qreal alt=0, QColor color=QColor());
+    //MAV2DIcon(mapcontrol::MapGraphicItem* map,mapcontrol::OPMapWidget* parent, qreal lat=0, qreal lon=0, qreal alt=0, QColor color=QColor());
+
+    MAV2DIcon(mapcontrol::MapGraphicItem* map, mapcontrol::OPMapWidget* parent);
 
     virtual ~MAV2DIcon();
 
@@ -55,6 +57,7 @@ public:
     }
 
     void drawIcon();
+    void drawPolygonIcon();//polygon gang gang
     static void drawAirframePolygon(int airframe, QPainter& painter, int radius, QColor& iconColor, float yaw);
 
 protected:

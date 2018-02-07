@@ -130,6 +130,12 @@ public:
     
     QWidget* getCurrentViewWidget(void) { return _currentViewWidget; }
 
+
+    float refToScreenXMain(float x);
+    float refToScreenYMain(float y);
+    //void drawPolygonMain(QPainter* painter);
+   //void drawPolygonMain(QPolygonF refPolygon, QPainter* painter);
+
 public slots:
     /** @brief Show the application settings */
     void showSettings();
@@ -149,6 +155,8 @@ public slots:
     void loadSimulationView();
     /** @brief Load view for engineer */
     void loadAnalyzeView();
+	//polygon planning view 
+	void loadPolygonPlanView();
     /** @brief Load New (QtQuick) Map View (Mission) */
     void loadPlanView();
     /** @brief Load Old (Qt Widget) Map View (Mission) */
@@ -175,6 +183,8 @@ public slots:
     void configureWindowName();
 
     void commsWidgetDestroyed(QObject *obj);
+
+
 
 protected slots:
     /**
@@ -224,6 +234,7 @@ protected:
         VIEW_UNUSED1,           // Unused (don't remove, or it will screw up saved settigns indices)
         VIEW_UNUSED2,           // Unused (don't remove, or it will screw up saved settigns indices)
         VIEW_EXPERIMENTAL_PLAN, // Original (Qt Widget) Mission/Map/Plan view mode. Used for setting mission waypoints and high-level system commands.
+		VIEW_POLYGON_PLAN,//polygon planning tool for periphery
     } VIEW_SECTIONS;
 
     /** @brief Catch window resize events */
@@ -301,6 +312,7 @@ private:
     QPointer<QWidget> _flightView;
     QPointer<QWidget> _setupView;
     QPointer<QWidget> _analyzeView;
+	QPointer<QWidget> _PolygonPlanView;
     QPointer<QWidget> _simView;
     QPointer<QWidget> _terminalView;
 
@@ -330,6 +342,7 @@ private:
     void _buildFlightView(void);
     void _buildSetupView(void);
     void _buildAnalyzeView(void);
+	void _buildPolygonPlanView(void);
     void _buildSimView(void);
     void _buildTerminalView(void);
 

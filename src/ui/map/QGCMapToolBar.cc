@@ -20,12 +20,15 @@ QGCMapToolBar::QGCMapToolBar(QWidget *parent) :
 
 void QGCMapToolBar::setMap(QGCMapWidget* map)
 {
-    _map = map;
+     _map = map;
 
     if (_map)
     {
         connect(_ui->goToButton, SIGNAL(clicked()), _map, SLOT(showGoToDialog()));
         connect(_ui->goHomeButton, SIGNAL(clicked()), _map, SLOT(goHome()));
+
+        connect(_ui->drawPolygonButton, SIGNAL(clicked()), _map, SLOT(drawPolygonMain()));//drawing polygon button
+
         connect(_ui->lastPosButton, SIGNAL(clicked()), _map, SLOT(loadSettings()));
         connect(_ui->clearTrailsButton, SIGNAL(clicked()), _map, SLOT(deleteTrails()));
         connect(_ui->lockCheckBox, SIGNAL(clicked(bool)), _map, SLOT(setZoomBlocked(bool)));

@@ -27,6 +27,7 @@
 #include "QGCApplication.h"
 #include <QDebug>
 
+
 HDDisplay::HDDisplay(const QStringList &plotList, QString title, QWidget *parent) :
     QGraphicsView(parent),
     uas(NULL),
@@ -410,6 +411,7 @@ void HDDisplay::setTitle()
     }
 }
 
+
 void HDDisplay::renderOverlay()
 {
     if (!valuesChanged || !isVisible()) return;
@@ -430,6 +432,10 @@ void HDDisplay::renderOverlay()
     // adjust scaling to fit both horizontally and vertically
     scalingFactor = this->width()/vwidth;
 
+
+
+
+
     double scalingFactorH = this->height()/vheight;
     if (scalingFactorH < scalingFactor) scalingFactor = scalingFactorH;
 
@@ -441,6 +447,8 @@ void HDDisplay::renderOverlay()
     const float gaugeWidth = vwidth / (((float)columns) + (((float)columns+1) * spacing + spacing * 0.5f));
     QColor gaugeColor;
     gaugeColor = qgcApp()->styleIsDark() ? gaugeColor = QColor(255, 255, 255) : gaugeColor = QColor(0, 0, 0);
+
+    //originally commented out
     //drawSystemIndicator(10.0f-gaugeWidth/2.0f, 20.0f, 10.0f, 40.0f, 15.0f, &painter);
     //drawGauge(15.0f, 15.0f, gaugeWidth/2.0f, 0, 1.0f, "thrust", values.value("thrust", 0.0f), gaugeColor, &painter, qMakePair(0.45f, 0.8f), qMakePair(0.8f, 1.0f), true);
     //drawGauge(15.0f+gaugeWidth*1.7f, 15.0f, gaugeWidth/2.0f, 0, 10.0f, "altitude", values.value("altitude", 0.0f), gaugeColor, &painter, qMakePair(1.0f, 2.5f), qMakePair(0.0f, 0.5f), true);

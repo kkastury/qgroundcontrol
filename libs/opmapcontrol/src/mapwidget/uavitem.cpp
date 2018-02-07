@@ -27,7 +27,30 @@
 #include "../internals/pureprojection.h"
 #include "uavitem.h"
 namespace mapcontrol
+
+
 {
+UAVItem::UAVItem(MapGraphicItem* map,OPMapWidget* parent,QString uavPic):map(map),mapwidget(parent),showtrail(true),showtrailline(true),trailtime(5),traildistance(20),autosetreached(true)
+,autosetdistance(100)
+{
+    //QDir dir(":/uavs/images/");
+    //QStringList list=dir.entryList();
+    pic.load(uavPic);
+   // Don't scale but trust the image we are given
+   // pic=pic.scaled(50,33,Qt::IgnoreAspectRatio);
+    localposition=map->FromLatLngToLocal(mapwidget->CurrentPosition());
+    this->setPos(localposition.X(),localposition.Y());
+    this->setZValue(4);
+    trail=new QGraphicsItemGroup();
+    trail->setParentItem(map);
+    trailLine=new QGraphicsItemGroup();
+    trailLine->setParentItem(map);
+    this->setFlag(QGraphicsItem::ItemIgnoresTransformations,true);
+    mapfollowtype=UAVMapFollowType::None;
+    trailtype=UAVTrailType::ByDistance;
+    timer.start();
+}
+/*
     UAVItem::UAVItem(MapGraphicItem* map,OPMapWidget* parent,QString uavPic):map(map),mapwidget(parent),showtrail(true),showtrailline(true),trailtime(5),traildistance(20),autosetreached(true)
     ,autosetdistance(100)
     {
@@ -39,15 +62,18 @@ namespace mapcontrol
         localposition=map->FromLatLngToLocal(mapwidget->CurrentPosition());
         this->setPos(localposition.X(),localposition.Y());
         this->setZValue(4);
+//   poly = new QGraphicsItemGroup();
+//   poly->setParentItem(map);
         trail=new QGraphicsItemGroup();
-        trail->setParentItem(map);
-        trailLine=new QGraphicsItemGroup();
-        trailLine->setParentItem(map);
+       trail->setParentItem(map);
+      // trail->setOpacity(1.00);
+       trailLine=new QGraphicsItemGroup();
+       trailLine->setParentItem(map);
         this->setFlag(QGraphicsItem::ItemIgnoresTransformations,true);
         mapfollowtype=UAVMapFollowType::None;
         trailtype=UAVTrailType::ByDistance;
         timer.start();
-    }
+    }*/
     UAVItem::~UAVItem()
     {
         delete trail;
@@ -64,6 +90,39 @@ namespace mapcontrol
         painter->setRenderHints(oldhints);
        //   painter->drawRect(QRectF(-pic.width()/2,-pic.height()/2,pic.width()-1,pic.height()-1));
     }
+
+    //creating a custom constructor for further polygon development
+
+//   UAVItem::UAVItem(MapGraphicItem* map,OPMapWidget* parent,QPainter* painter):map(map),mapwidget(parent),showpoly(true)
+//    {
+
+//       // painter->rotate(-90);
+        //painter(viewport());
+//         painter->setRenderHint(QPainter::TextAntialiasing);
+//         painter->setRenderHint(QPaintetr::Antialiasing);
+//        painter->setRenderHint(QPainter::HighQualityAntialiasing);
+//        localposition=map->FromLatLngToLocal(mapwidget->CurrentPosition());
+//        this->setPos(localposition.X(),localposition.Y());
+//        this->setZValue(4);
+//        poly = new QGraphicsItemGroup();
+//        poly->setParentItem(map);
+//        trail=new QGraphicsItemGroup();
+//        trail->setParentItem(map);
+//        QPainter::RenderHints oldhints = painter->renderHints();
+//        painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+//        painter->drawPixmap(-pic.width()/2,-pic.height()/2,pic);
+//        painter->setRenderHints(oldhints);
+//       // Don't scale but trust the image we are given
+//       // pic=pic.scaled(50,33,Qt::IgnoreAspectRatio);
+//       // localposition=map->FromLatLngToLocal(mapwidget->CurrentPosition());
+//       // this->setPos(localposition.X(),localposition.Y());
+//        //this->setZValue(4);
+
+//        timer.start();
+//       //   painter->drawRect(QRectF(-pic.width()/2,-pic.height()/2,pic.width()-1,pic.height()-1));
+//    }
+
+
     QRectF UAVItem::boundingRect()const
     {
         return QRectF(-pic.width()/2,-pic.height()/2,pic.width(),pic.height());

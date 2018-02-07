@@ -42,6 +42,7 @@ namespace mapcontrol
         compass(0),
         showuav(false),
         showhome(false),
+        showpolygon(false),
         diagTimer(0),
         showDiag(false),
         diagGraphItem(0)
@@ -208,6 +209,28 @@ namespace mapcontrol
 
         }
     }
+
+
+    //show polygon on the map at this instance
+    void OPMapWidget::SetShowPolygon(const bool &value)
+    {
+            if (value){
+                QPainter painter(this);
+
+//                QRectF rectangle(10.0, 20.0, 80.0, 60.0);
+//                //QRectF rectangle(120.0, 120.0, 80.0, 60.0);
+//                QPainter painter(this);
+//                painter.drawEllipse(rectangle);
+            }
+
+
+
+    }
+
+
+
+
+
 
     void OPMapWidget::resizeEvent(QResizeEvent *event)
     {

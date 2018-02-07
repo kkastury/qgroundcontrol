@@ -377,6 +377,10 @@ namespace mapcontrol
         bool ShowUAV()const{return showuav;}
         void SetShowHome(bool const& value);
         bool ShowHome()const{return showhome;}
+
+        void SetShowPolygon(const bool &value);
+        void ShowPolygon()const{showpolygon;}//polygon stuff
+
         void SetShowDiagnostics(bool const& value);
         void SetUavPic(QString UAVPic);
                 QMap<int, UAVItem*> UAVS;
@@ -392,6 +396,7 @@ namespace mapcontrol
         QGraphicsSvgItem *compass;
         bool showuav;
         bool showhome;
+        bool showpolygon;//shows polygon
         QTimer * diagTimer;
         bool showDiag;
         QGraphicsTextItem * diagGraphItem;

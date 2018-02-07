@@ -20,20 +20,54 @@ MAV2DIcon::MAV2DIcon(mapcontrol::MapGraphicItem* map,mapcontrol::OPMapWidget* pa
     drawIcon();
 }
 
-MAV2DIcon::MAV2DIcon(mapcontrol::MapGraphicItem* map, mapcontrol::OPMapWidget* parent, qreal lat, qreal lon, qreal alt, QColor color)
-    : UAVItem(map,parent),
-    radius(20),
-    type(0),
-    airframe(0),
-    iconColor(color),
-    selected(false),
-    uasid(0)
+//MAV2DIcon::MAV2DIcon(mapcontrol::MapGraphicItem* map, mapcontrol::OPMapWidget* parent, qreal lat, qreal lon, qreal alt, QColor color)
+//    : UAVItem(map,parent),
+//    radius(20),
+//    type(0),
+//    airframe(0),
+//    iconColor(color),
+//    selected(false),
+//    uasid(0)
+//{
+//    size = QSize(radius, radius);
+//    pic = QPixmap(size);
+//    //drawIcon();
+//    SetUAVPos(internals::PointLatLng(lat, lon), alt, color);
+//}
+
+
+//void UAVItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+//{
+//    Q_UNUSED(option);
+//    Q_UNUSED(widget);
+//   // painter->rotate(-90);
+//    QPainter::RenderHints oldhints = painter->renderHints();
+//    painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+//    painter->drawPixmap(-pic.width()/2,-pic.height()/2,pic);
+//    painter->setRenderHints(oldhints);
+//   //   painter->drawRect(QRectF(-pic.width()/2,-pic.height()/2,pic.width()-1,pic.height()-1));
+//}
+
+MAV2DIcon::MAV2DIcon(mapcontrol::MapGraphicItem* map, mapcontrol::OPMapWidget* parent)
+    :UAVItem(map,parent),
+      radius(40)
+//selected(false)
+
 {
-    size = QSize(radius, radius);
-    pic = QPixmap(size);
-    drawIcon();
-    SetUAVPos(internals::PointLatLng(lat, lon), alt, color);
+
+   // drawPolygonIcon();
+    // QPainter painter(viewport());
+   // painter.setRenderHint(QPainter::TextAntialiasing);
+//   painter.setRenderHint(QPainter::Antialiasing);
+//   painter.setRenderHint(QPainter::HighQualityAntialiasing);
+//  painter.drawEllipse(100,100,50,50);
+   // pic = QPixmap(size);
+   //
+   // SetUAVPos(internals::PointLatLng(lat, lon), alt, color);
 }
+
+
+
 
 MAV2DIcon::~MAV2DIcon()
 {
@@ -67,7 +101,7 @@ void MAV2DIcon::setYaw(float yaw)
 void MAV2DIcon::drawIcon()
 {
     pic.fill(Qt::transparent);
-    QPainter painter(&pic);
+    QPainter painter;
     painter.setRenderHint(QPainter::TextAntialiasing);
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setRenderHint(QPainter::HighQualityAntialiasing);
@@ -92,6 +126,42 @@ void MAV2DIcon::drawIcon()
     }
     painter.drawEllipse(QPoint(0, 0), radius/2-1, radius/2-1);
     drawAirframePolygon(airframe, painter, radius, iconColor, yaw);
+}
+
+
+
+
+void MAV2DIcon::drawPolygonIcon()
+{
+    //pic.fill(Qt::transparent);
+  QPainter painter;
+ painter.setRenderHint(QPainter::TextAntialiasing);
+painter.setRenderHint(QPainter::Antialiasing);
+painter.setRenderHint(QPainter::HighQualityAntialiasing);
+
+    //radius = qMax(pic.width(), pic.height());
+   // radius = pic.width();
+//    // Rotate by yaw
+//    painter.translate(radius/2, radius/2);
+
+//    // Draw selected indicator
+//    painter.setBrush(Qt::NoBrush);
+//    if (selected) {
+//        QPen pen(Qt::yellow);
+//        pen.setWidth(2);
+//        painter.setPen(pen);
+//    }
+//    else
+//    {
+//        QPen pen(Qt::white);
+//        pen.setWidth(1);
+//        painter.setPen(pen);
+//    }
+   QRectF rectangle(10.0, 20.0, 80.0, 60.0);
+    painter.drawRoundedRect(rectangle, 20.0, 15.0);
+     //painter.drawEllipse(100,100,600,600);
+    //painter.drawEllipse(QPoint(200, 200), radius, radius);
+//   // drawAirframePolygon(airframe, painter, radius, iconColor, yaw);
 }
 
 void MAV2DIcon::drawAirframePolygon(int airframe, QPainter& painter, int radius, QColor& iconColor, float yaw)

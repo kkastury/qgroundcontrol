@@ -55,6 +55,7 @@ public:
         ViewPlan   , // MainWindow::VIEW_MISSION
         ViewFly    , // MainWindow::VIEW_FLIGHT
         ViewSetup  , // MainWindow::VIEW_SETUP
+		ViewPolygonPlan,//MainWindow::VIEW_POLYGON_PLAN
     } ViewType_t;
 
     MainToolBar(QWidget* parent = NULL);
@@ -65,6 +66,7 @@ public:
     Q_INVOKABLE void    onFlyView();
     Q_INVOKABLE void    onFlyViewMenu();
     Q_INVOKABLE void    onAnalyzeView();
+	Q_INVOKABLE void    onPolygonPlanView();
     Q_INVOKABLE void    onConnect(QString conf);
     Q_INVOKABLE void    onDisconnect(QString conf);
     Q_INVOKABLE void    onEnterMessageArea(int x, int y);

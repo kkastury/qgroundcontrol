@@ -69,6 +69,8 @@ public slots:
     void showGoToDialog();
     /** @brief Jump to the home position on the map */
     void goHome();
+    /** @brief Draw Polygon on Existing Map View */
+    void drawPolygonMain();
     /** @brief Update this waypoint for this UAS */
     void updateWaypoint(int uas, Waypoint* wp);
     /** @brief Update the whole waypoint */

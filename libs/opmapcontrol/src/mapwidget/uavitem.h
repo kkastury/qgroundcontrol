@@ -57,6 +57,9 @@ namespace mapcontrol
                 enum { Type = UserType + 2 };
         UAVItem(MapGraphicItem* map,OPMapWidget* parent, QString uavPic=QString::fromUtf8(":/uavs/images/mapquad.png"));
         ~UAVItem();
+
+        //drawing polygon stuff
+        UAVItem(MapGraphicItem* map,OPMapWidget* parent,QPainter *painter);
         /**
         * @brief Sets the UAV position
         *
@@ -208,11 +211,21 @@ namespace mapcontrol
         core::Point localposition;
         OPMapWidget* mapwidget;
         QGraphicsItemGroup* trail;
+
+
+        //polygon graphics item group
+        QGraphicsItemGroup* poly;
+
         QGraphicsItemGroup * trailLine;
         internals::PointLatLng lasttrailline;
         QTime timer;
         bool showtrail;
         bool showtrailline;
+        //for polygon
+        bool showpoly;
+        int polytime;
+        int polydistance;
+
         int trailtime;
         int traildistance;
         bool autosetreached;

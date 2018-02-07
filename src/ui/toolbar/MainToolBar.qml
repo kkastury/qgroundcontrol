@@ -220,6 +220,7 @@ Rectangle {
                     planButton.repaintChevron    = true;
                     flyButton.repaintChevron     = true;
                     analyzeButton.repaintChevron = true;
+					polygonPlanButton.repaintChevron = true;
                 }
             }
 
@@ -275,6 +276,18 @@ Rectangle {
                     mainToolBar.onAnalyzeView();
                 }
                 z: 700
+            }
+			  QGCToolBarButton {
+                id: polygonPlanButton
+                width: getProportionalDimmension(90)
+                height: cellHeight
+                exclusiveGroup: mainActionGroup
+                text: qsTr("PolygonPlan")
+                checked: (mainToolBar.currentView === MainToolBar.ViewPolygonPlan)
+                onClicked: {
+                    mainToolBar.onPolygonPlanView();
+                }
+                z: 600
             }
         } // Row
 

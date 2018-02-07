@@ -40,6 +40,20 @@ This file is part of the QGROUNDCONTROL project
 #endif
 #include <QQuickView>
 #include <QDesktopWidget>
+#include <QPainter>
+
+//#include <QImage>//for using Format enums
+
+//#include <QAbstractScrollArea> //for using viewport()
+
+
+//#include <qmath.h>
+//#include "UASManager.h"
+//#include "HDDisplay.h"
+//#include "ui_HDDisplay.h"
+//#include <QSize>
+//for drawing a polygon
+
 
 #include "QGC.h"
 #ifndef __ios__
@@ -101,6 +115,10 @@ const char* MainWindow::_hdd2DockWidgetName = "HEAD_DOWN_DISPLAY_2_DOCKWIDGET";
 const char* MainWindow::_pfdDockWidgetName = "PRIMARY_FLIGHT_DISPLAY_DOCKWIDGET";
 const char* MainWindow::_hudDockWidgetName = "HEAD_UP_DISPLAY_DOCKWIDGET";
 const char* MainWindow::_uasInfoViewDockWidgetName = "UAS_INFO_INFOVIEW_DOCKWIDGET";
+
+
+
+
 
 static MainWindow* _instance = NULL;   ///< @brief MainWindow singleton
 
@@ -280,6 +298,7 @@ MainWindow::MainWindow(QSplashScreen* splashScreen)
     _ui.actionPlan->setShortcut(QApplication::translate("MainWindow", "Meta+2", 0));
     _ui.actionFlight->setShortcut(QApplication::translate("MainWindow", "Meta+3", 0));
     _ui.actionAnalyze->setShortcut(QApplication::translate("MainWindow", "Meta+4", 0));
+	_ui.actionPolygonPlan->setShortcut(QApplication::translate("MainWindow", "Meta+6", 0));
     _ui.actionSimulationView->setShortcut(QApplication::translate("MainWindow", "Meta+5", 0));
     _ui.actionFullscreen->setShortcut(QApplication::translate("MainWindow", "Meta+Return", 0));
 #else
@@ -287,6 +306,7 @@ MainWindow::MainWindow(QSplashScreen* splashScreen)
     _ui.actionPlan->setShortcut(QApplication::translate("MainWindow", "Ctrl+2", 0));
     _ui.actionFlight->setShortcut(QApplication::translate("MainWindow", "Ctrl+3", 0));
     _ui.actionAnalyze->setShortcut(QApplication::translate("MainWindow", "Ctrl+4", 0));
+	_ui.actionPolygonPlan->setShortcut(QApplication::translate("MainWindow", "Ctrl+6", 0));
     _ui.actionSimulationView->setShortcut(QApplication::translate("MainWindow", "Ctrl+5", 0));
     _ui.actionFullscreen->setShortcut(QApplication::translate("MainWindow", "Ctrl+Return", 0));
 #endif
@@ -368,7 +388,7 @@ void MainWindow::_createDockWidget(const QString& title, const QString& name, Qt
 	// Create widget
 	QGCDockWidget* dockWidget = new QGCDockWidget(title, action, this);
 	Q_CHECK_PTR(dockWidget);
-	dockWidget->setObjectName(name);
+    dockWidget->setObjectName(name);
 	dockWidget->setVisible (false);
 	if (innerWidget) {
 		// Put inner widget inside QDockWidget
@@ -468,6 +488,106 @@ void MainWindow::_buildAnalyzeView(void)
         _analyzeView = new QGCDataPlot2D(this);
         _analyzeView->setVisible(false);
     }
+}
+
+
+//QPolygon polygon;
+//polygon << QPoint(5, 30) << QPoint(2, 10) << QPoint(4, 20) << QPoint(5, 30);
+//Finally, you set your image as painter and paint polygon into the image.Of course, you need to check if the polygon is inside.After that, yoy display the image by line writen above(by set the image to label).
+//QPainter painter(&im);
+//QPainterPath path;
+//path.addPolygon(polygon);
+//painter.drawPolygon(poly);
+//painter.end();
+
+//defining the buildPolygonPlanView variables to be used within definition 
+
+/*Format form = Format_RGB32;
+QImage im = QImage(width, height,form);*/ //choose with, height and format
+//ui->label->setPixmap(QPixmap::fromImage(im.scaled(ui->label->width(), ui->label->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+
+
+//void CustomWidget::paintEvent(QPaintEvent *)
+//{
+//   QPainter painter(this);
+
+//   auto r1 = rect().adjusted(10, 10, -10, -10);
+//   painter.setPen(Qt::white);
+//   painter.drawRect(r1);
+
+//   auto r2 = QRect{QPoint(0, 0), QSize(100, 100)};
+//   r2.moveCenter(m_mousePos);
+//   painter.setPen(QPen{Qt::black, 3, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin});
+//   painter.drawRect(r2);
+//}
+
+
+QPolygonF polygon(6);
+
+
+
+//polygon painter pointer
+
+
+
+
+
+
+
+//QColor yellow("#f0d048");
+//Qt::BrushStyle style = Qt::SolidPattern;
+//QBrush brush(yellow, style);\
+//painter.setBrush(brush);
+//painter.drawEllipse(10,10,10,10);
+
+
+//poly.setRenderHint(QPainter::Antialiasing, true);
+//poly.setRenderHint(QPainter::HighQualityAntialiasing, true);
+
+
+float vwidth = 80.0f;
+//QScreen* scr = QApplication::primaryScreen();
+//QSize scrSize = scr->availableSize();//doesnt like this line find out a way to fix this part
+
+// double scalingFactor = scrSize2.width() / vwidth;
+double scalingFactor = 100;
+float MainWindow::refToScreenXMain(float x)
+{
+    return (scalingFactor * x);
+}
+
+
+float MainWindow::refToScreenYMain(float y)
+{
+    return (scalingFactor * y);
+}
+
+
+
+
+
+//QImage im = QImage(width, height, format); //choose with, height and format
+//ui->label->setPixmap(QPixmap::fromImage(im.scaled(ui->label->width(), ui->label->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation )));
+//Now, you need to handle how to create a polygon. You can do it by following line, you can define points as you want.
+//QPolygon polygon;
+//polygon << QPoint(5,30) << QPoint(2, 10) << QPoint(4, 20)<< QPoint(5, 30);
+//Finally, you set your image as painter and paint polygon into the image. Of course, you need to check if the polygon is inside. After that, yoy display the image by line writen above (by set the image to label).
+//QPainter painter(&im);
+//QPainterPath path;
+//path.addPolygon(polygon);
+//painter.drawPolygon(poly);
+//painter.end();
+
+
+void MainWindow::_buildPolygonPlanView(void)
+{
+
+	if (!_PolygonPlanView) {
+		_PolygonPlanView = new QGCMapTool(this);
+		_PolygonPlanView->setVisible(false);
+        //drawPolygonMain(polygon, poly);
+         //printf("Works");
+       }
 }
 
 void MainWindow::_buildSimView(void)
@@ -718,6 +838,7 @@ void MainWindow::connectCommonActions()
     // Bind together the perspective actions
     QActionGroup* perspectives = new QActionGroup(_ui.menuPerspectives);
     perspectives->addAction(_ui.actionAnalyze);
+	perspectives->addAction(_ui.actionPolygonPlan);
     perspectives->addAction(_ui.actionFlight);
     perspectives->addAction(_ui.actionSimulationView);
     perspectives->addAction(_ui.actionPlan);
@@ -731,6 +852,11 @@ void MainWindow::connectCommonActions()
         _ui.actionAnalyze->setChecked(true);
         _ui.actionAnalyze->activate(QAction::Trigger);
     }
+	if (_currentView == VIEW_POLYGON_PLAN)	
+	{
+		_ui.actionPolygonPlan->setChecked(true);
+		_ui.actionPolygonPlan->activate(QAction::Trigger);
+	}
     if (_currentView == VIEW_FLIGHT)
     {
         _ui.actionFlight->setChecked(true);
@@ -784,6 +910,7 @@ void MainWindow::connectCommonActions()
     connect(_ui.actionAnalyze, SIGNAL(triggered()), this, SLOT(loadAnalyzeView()));
     connect(_ui.actionPlan, SIGNAL(triggered()), this, SLOT(loadPlanView()));
     connect(_ui.actionExperimentalPlanView, SIGNAL(triggered()), this, SLOT(loadOldPlanView()));
+	connect(_ui.actionPolygonPlan, SIGNAL(triggered()), this, SLOT(loadPolygonPlanView()));
 
     // Help Actions
     connect(_ui.actionOnline_Documentation, SIGNAL(triggered()), this, SLOT(showHelp()));
@@ -931,6 +1058,12 @@ void MainWindow::_loadCurrentViewState(void)
             defaultWidgets = "PARAMETER_INTERFACE_DOCKWIDGET,FILE_VIEW_DOCKWIDGET";
             break;
 
+		case VIEW_POLYGON_PLAN:
+			_buildPolygonPlanView();
+			centerView = _PolygonPlanView;
+			defaultWidgets = "WAYPOINT_LIST_DOCKWIDGET";
+			break;
+
         case VIEW_FLIGHT:
             _buildFlightView();
             centerView = _flightView;
@@ -1065,6 +1198,17 @@ void MainWindow::loadAnalyzeView()
         _ui.actionAnalyze->setChecked(true);
         _loadCurrentViewState();
     }
+}
+
+void MainWindow::loadPolygonPlanView()
+{
+	if (_currentView != VIEW_POLYGON_PLAN)
+	{
+		_storeCurrentViewState();
+		_currentView = VIEW_POLYGON_PLAN;
+		_ui.actionAnalyze->setChecked(true);
+		_loadCurrentViewState();
+	}
 }
 
 void MainWindow::loadPlanView()

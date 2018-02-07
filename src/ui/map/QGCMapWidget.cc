@@ -1,4 +1,4 @@
-#include <QInputDialog>
+    #include <QInputDialog>
 #include "QGCMapWidget.h"
 #include "QGCMapToolBar.h"
 #include "UASInterface.h"
@@ -7,6 +7,7 @@
 #include "Waypoint2DIcon.h"
 #include "UASWaypointManager.h"
 #include "QGCMessageBox.h"
+
 
 QGCMapWidget::QGCMapWidget(QWidget *parent) :
     mapcontrol::OPMapWidget(parent),
@@ -135,6 +136,7 @@ bool QGCMapWidget::setHomeActionTriggered()
 
     return success;
 }
+//set a dialog window on top
 
 void QGCMapWidget::mousePressEvent(QMouseEvent *event)
 {
@@ -436,7 +438,7 @@ void QGCMapWidget::updateGlobalPosition(UASInterface* uas, double lat, double lo
 
         // Set new lat/lon position of UAV icon
         internals::PointLatLng pos_lat_lon = internals::PointLatLng(lat, lon);
-        uav->SetUAVPos(pos_lat_lon, altWGS84);
+       uav->SetUAVPos(pos_lat_lon, altWGS84);
         // Follow status
         if (followUAVEnabled && uas->getUASID() == followUAVID) SetCurrentPosition(pos_lat_lon);
         // Convert from radians to degrees and apply
@@ -467,7 +469,7 @@ void QGCMapWidget::updateGlobalPosition()
 
         // Set new lat/lon position of UAV icon
         internals::PointLatLng pos_lat_lon = internals::PointLatLng(system->getLatitude(), system->getLongitude());
-        uav->SetUAVPos(pos_lat_lon, system->getAltitudeAMSL());
+       uav->SetUAVPos(pos_lat_lon, system->getAltitudeAMSL());
         // Follow status
         if (followUAVEnabled && system->getUASID() == followUAVID) SetCurrentPosition(pos_lat_lon);
         // Convert from radians to degrees and apply
@@ -582,6 +584,42 @@ void QGCMapWidget::goHome()
 {
     SetCurrentPosition(Home->Coord());
     SetZoom(17);
+}
+
+void QGCMapWidget::drawPolygonMain()
+{
+//    : UAVItem(map,parent),
+//    radius(20),
+//    type(0),
+//    airframe(0),
+//    iconColor(color),
+//    selected(false),
+//    uasid(0)
+//{
+//    size = QSize(radius, radius);
+//    pic = QPixmap(size);
+//    drawIcon();
+//    SetUAVPos(internals::PointLatLng(lat, lon), alt, color);
+//    mapcontrol::MapGraphicItem* map, mapcontrol::OPMapWidget* parent, qreal lat, qreal lon, qreal alt, QColor color
+    //QColor::QColor(int r, int g, int b, int a = 255);
+     // QColor color = QColor(255,255,0,255);
+     SetCurrentPosition(Home->Coord());
+
+//     QPainter* painter;
+//     painter->drawEllipse(100,100,50,50);
+//    painter.setRenderHint(QPainter::TextAntialiasing);
+//   painter.setRenderHint(QPainter::Antialiasing);
+//   painter.setRenderHint(QPainter::HighQualityAntialiasing);
+//  painter.drawEllipse(100,100,50,50);
+    //SetZoom(500);
+   //MAV2DIcon* icon2 = new MAV2DIcon(map,this,100,100,0,color);
+  MAV2DIcon* icon2 = new MAV2DIcon(map, this);
+  icon2->setParentItem(map);
+   //icon2->drawPolygonIcon();
+//    MAV2DIcon* newUAV = new MAV2DIcon(map, this, uas);
+   /* MAV2DIcon icon;
+    icon.drawIcon()*/;
+    //SetShowPolygon(true);
 }
 
 /**

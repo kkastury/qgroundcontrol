@@ -164,6 +164,13 @@ void MainToolBar::onAnalyzeView()
     MainWindow::instance()->loadAnalyzeView();
 }
 
+void MainToolBar::onPolygonPlanView()
+{
+	setCurrentView(MainWindow::VIEW_POLYGON_PLAN);
+	MainWindow::instance()->loadPolygonPlanView();
+}
+
+
 void MainToolBar::onDisconnect(QString conf)
 {
     if(conf.isEmpty()) {
@@ -248,6 +255,9 @@ void MainToolBar::setCurrentView(int currentView)
         case MainWindow::VIEW_ANALYZE:
             view = ViewAnalyze;
             break;
+		case MainWindow::VIEW_POLYGON_PLAN:
+			view = ViewPolygonPlan;
+			break;
         case MainWindow::VIEW_PLAN:
             view = ViewPlan;
             break;

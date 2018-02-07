@@ -63,6 +63,7 @@ public:
     HDDisplay(const QStringList& plotList, QString title="", QWidget *parent = 0);
     ~HDDisplay();
 
+
 public slots:
     /** @brief Update the HDD with new data */
     void updateValue(const int uasId, const QString& name, const QString& unit, const QVariant &value, const quint64 msec);
@@ -109,7 +110,7 @@ protected:
     QList<QAction*> getItemRemoveActions();
     void createActions();
     float refLineWidthToPen(float line);
-    float refToScreenX(float x);
+	float refToScreenX(float x);
     float refToScreenY(float y);
     float screenToRefX(float x);
     float screenToRefY(float y);
